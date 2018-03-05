@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Execute action with item
-        if(mCurrentItem != null && Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0))
         {
             // TODO: Logic which action to execute has to come from the particular item
             _animator.SetTrigger("attack_1");
@@ -166,8 +166,10 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
+		Vector3 movement = new Vector3 (h, 0, v);
+
         // Calculate the forward vector
-        Vector3 camForward_Dir = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+        /*Vector3 camForward_Dir = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
         Vector3 move = v * camForward_Dir + h * Camera.main.transform.right;
 
         if (move.magnitude > 1f) move.Normalize();
@@ -178,21 +180,24 @@ public class PlayerController : MonoBehaviour
         // Get Euler angles
         float turnAmount = Mathf.Atan2(move.x, move.z);
 
-        transform.Rotate(0, turnAmount * RotationSpeed * Time.deltaTime, 0);
+		if(v >= 0)
+        	transform.Rotate(0, turnAmount * RotationSpeed * Time.deltaTime, 0);
 
-        if (_characterController.isGrounded)
-        {
-            _animator.SetBool("run", move.magnitude > 0);
+		if (_characterController.isGrounded && v >= 0) {
+			_animator.SetBool ("run", move.magnitude > 0);
 
-            _moveDirection = transform.forward * move.magnitude;
+			_moveDirection = transform.forward * move.magnitude;
 
-            _moveDirection *= Speed;
+			_moveDirection *= Speed;
 
-        }
+		} else {
+			_moveDirection = -transform.forward * move.magnitude;
+			_moveDirection *= Speed;
+		}
 
         _moveDirection.y -= Gravity * Time.deltaTime;
 
-        _characterController.Move(_moveDirection * Time.deltaTime);
+        _characterController.Move(_moveDirection * Time.deltaTime);*/
     }
 
     private IInventoryItem mItemToPickup = null;
