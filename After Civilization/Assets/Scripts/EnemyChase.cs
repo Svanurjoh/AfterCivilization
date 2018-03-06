@@ -24,6 +24,7 @@ public class EnemyChase : MonoBehaviour {
 	private bool isInView = false;
 
 	private float headLevel = 1.5f;
+	private float dist;
 
 	void Start()
 	{
@@ -49,10 +50,8 @@ public class EnemyChase : MonoBehaviour {
 				}
 			}
 
-			float dist = Vector3.Distance (tmpPlayer, tmpEnemy);
-			if (dist < attackDist) {
-				_animator.SetBool("attack_1", dist < attackDist);
-			}
+			dist = Vector3.Distance (tmpPlayer, tmpEnemy);
+			_animator.SetBool("attack_1", dist < attackDist);
 
 		}
 	}

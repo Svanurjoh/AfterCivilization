@@ -16,9 +16,11 @@ public class PlayerMovement : MonoBehaviour {
 	public bool grounded;
 	private Vector3 moveDirection = Vector3.zero;
 	private bool isWalking;
+	private bool isMoving;
 	private string moveStatus = "idle";
 
 	public GameObject camera1;
+	private Animator _animator;
 	public CharacterController controller;
 	public bool isJumping;
 	private float myAng = 0.0f;
@@ -28,7 +30,7 @@ public class PlayerMovement : MonoBehaviour {
 	public GameObject fenceSpawn;
 
 	void Start () {
-
+		_animator = GetComponent<Animator>();
 		controller = GetComponent<CharacterController>();
 	}
 
@@ -58,9 +60,9 @@ public class PlayerMovement : MonoBehaviour {
 
 			moveStatus = "idle";
 
-
-
-			if(moveDirection != Vector3.zero)
+			isMoving = false;
+			if (moveDirection != Vector3.zero)
+				isMoving = true;
 				moveStatus = isWalking ? "walking" : "running";
 
 			if (Input.GetKeyDown(KeyCode.Space) && canJump) {      
@@ -106,6 +108,8 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetMouseButtonDown(1)) {
 			CreateFence ();
 		}
+
+		_animator.SetBool("run", grounded && isMoving);
 
 	}
 
