@@ -28,7 +28,7 @@ public class Axe : InventoryItemBase {
 	{
 		if (other.gameObject.tag == "EnemyMesh" && _playerController.getSwing()) {
 			Debug.Log (_playerController.getSwing ());
-			Destroy (other.gameObject);
+			Destroy (other.transform.parent.gameObject);
 		}
 	}
 
