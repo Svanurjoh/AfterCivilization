@@ -69,7 +69,6 @@ public class PlayerMovement : MonoBehaviour {
 				moveDirection.y = jumpSpeed;
 				isJumping = true;
 			}
-
 		}
 
 
@@ -77,17 +76,15 @@ public class PlayerMovement : MonoBehaviour {
 
 		if(camera1.transform.gameObject.transform.GetComponent<PlayerCamera>().inFirstPerson == false) {
 			if(Input.GetMouseButton(1)) {
-				transform.rotation = Quaternion.Euler(0,Camera.main.transform.eulerAngles.y,0);
+				//transform.rotation = Quaternion.Euler(0,Camera.main.transform.eulerAngles.y,0);
 			} else {
 				transform.Rotate(0,Input.GetAxis("Horizontal") * rotateSpeed * Time.deltaTime, 0);
-
 			}
 		}
 		else {
 			if(Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
 				transform.rotation = Quaternion.Euler(0,Camera.main.transform.eulerAngles.y,0);
 			}
-
 		}
 
 		//Apply gravity
