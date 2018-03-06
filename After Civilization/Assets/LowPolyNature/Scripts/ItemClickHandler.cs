@@ -54,7 +54,6 @@ public class ItemClickHandler : MonoBehaviour
 
         if (item != null)
         {
-			Debug.Log (_Inventory);
             _Inventory.UseItem(item);
 
             item.OnUse();
