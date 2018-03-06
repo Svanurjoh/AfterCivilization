@@ -5,26 +5,19 @@ using UnityEngine.AI;
 
 public class EnemyChase : MonoBehaviour {
 
-	public Transform Player;
-	int MoveSpeed = 3;
-	int MaxDist = 20;
-	int attackDist = 1;
-
-	public float Speed = 5.0f;
-	public float RotationSpeed = 240.0f;
-	private float Gravity = 20.0f;
-
-	private float lastAttack;
+	private float attackDist = 1.5f;
 	private float attackSpeed = 1.2f;
+	private float headLevel = 1.5f;
+	private float lastAttack;
+	private float dist;
+	private bool canAttack;
 	private Animator _animator;
 	private CharacterController _characterController;
-	private Vector3 _moveDirection = Vector3.zero;
 	private NavMeshAgent _agent;
 	private Vector3 lastPost;
-	private bool isInView = false;
 
-	private float headLevel = 1.5f;
-	private float dist;
+	private int frameCount;
+	private bool isAttacking;
 
 	void Start()
 	{
@@ -43,7 +36,6 @@ public class EnemyChase : MonoBehaviour {
 			tmpEnemy.y += headLevel;
 			tmpPlayer.y += headLevel;
 
-			//Debug.DrawRay (tmpEnemy, (tmpPlayer - tmpEnemy), Color.red, 2f, false);
 			if (Physics.Raycast (tmpEnemy, (tmpPlayer - tmpEnemy), out hit, 10)) {
 				if (hit.collider.tag == "Player") {
 					_agent.destination = other.transform.position;
@@ -51,15 +43,36 @@ public class EnemyChase : MonoBehaviour {
 			}
 
 			dist = Vector3.Distance (tmpPlayer, tmpEnemy);
-			_animator.SetBool("attack_1", dist < attackDist);
+			transform.LookAt(other.transform);
 
+			if (dist <= attackDist && canAttack) {
+				lastAttack = 0;
+				_animator.SetTrigger ("attack_1");
+				canAttack = false;
+				isAttacking = true;
+				frameCount = Time.frameCount;
+			}
+
+			if (isAttacking && frameCount + 10 == Time.frameCount) {
+				isAttacking = false;
+				if (dist <= attackDist) {
+					var player = other.GetComponent<PlayerController> ();
+					player.TakeDamage (10);
+				}
+			}
 		}
 	}
 
 	void Update()
 	{
-		bool isMoving = lastPost != transform.position;
-		_animator.SetBool("run", isMoving);
+		if (!canAttack) {
+			lastAttack += Time.deltaTime;
+		}
+		if (lastAttack >= attackSpeed) {
+			canAttack = true;
+		}
+
+		_animator.SetBool("run", lastPost != transform.position);
 		lastPost = transform.position;
 	}
 }
