@@ -24,6 +24,9 @@ public class PlayerMovement : MonoBehaviour {
 	private float myAng = 0.0f;
 	public bool canJump = true;
 
+	public GameObject fence;
+	public GameObject fenceSpawn;
+
 	void Start () {
 
 		controller = GetComponent<CharacterController>();
@@ -100,10 +103,19 @@ public class PlayerMovement : MonoBehaviour {
 
 		grounded = (flags & CollisionFlags.Below) != 0;
 
+		if (Input.GetMouseButtonDown(1)) {
+			CreateFence ();
+		}
+
 	}
 
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 
 		myAng = Vector3.Angle(Vector3.up, hit.normal);
+	}
+
+	public void CreateFence() {
+		GameObject e = Instantiate (fence, fenceSpawn.transform.position, fenceSpawn.transform.rotation) as GameObject;
+		//e.transform.localScale += new Vector3 (0.5f, 0.5f, 0.5f);
 	}
 }
