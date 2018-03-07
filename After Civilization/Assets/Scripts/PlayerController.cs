@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     private IInventoryItem mCurrentItem = null;
 
     private bool mLockPickup = false;
-
+	private int frameCount = 0;
+	private bool isSwinging = false;
     private HealthBar mHealthBar;
 
     #endregion
@@ -148,8 +149,14 @@ public class PlayerController : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             // TODO: Logic which action to execute has to come from the particular item
+			isSwinging = true;
+			frameCount = Time.frameCount;
             _animator.SetTrigger("attack_1");
         }
+
+		if (frameCount + 14 == Time.frameCount) {
+			isSwinging = false;
+		}
     }
 
     private IInventoryItem mItemToPickup = null;
@@ -180,5 +187,9 @@ public class PlayerController : MonoBehaviour
             mItemToPickup = null;
         }
     }
+
+	public bool getSwing() {
+		return isSwinging;
+	}
 
 }
