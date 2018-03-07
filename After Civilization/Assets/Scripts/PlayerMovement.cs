@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -103,7 +104,7 @@ public class PlayerMovement : MonoBehaviour {
 		grounded = (flags & CollisionFlags.Below) != 0;
 
 		if (Input.GetMouseButtonDown(1)) {
-			CreateFence ();
+			SceneManager.LoadScene ("Main");
 		}
 
 		_animator.SetBool("run", grounded && isMoving);
