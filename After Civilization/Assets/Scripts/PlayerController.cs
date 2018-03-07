@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -114,8 +115,11 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int amount)
     {
         Health -= amount;
-        if (Health < 0)
-            Health = 0;
+		if (Health <= 0) {
+			Health = 0;
+			var scene = SceneManager.GetActiveScene ();
+			SceneManager.LoadScene (scene.name);
+		}
 
         mHealthBar.SetHealth(Health);
     }
