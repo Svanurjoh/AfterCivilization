@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gem : InventoryItemBase {
+public class Gem : MonoBehaviour {
 
-    public override string Name
-    {
-        get
-        {
-            return "Gem";
-        }
-    }
+	void Awake() {
+		
+	}
 
-    public override void OnUse()
-    {
-        // TODO: Do something with the object.... next tutorial!
-        base.OnUse();
-    }
+	void Update() {
+		
+	}
+
 }
