@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
         mHealthBar = Hud.transform.Find("HealthBar").GetComponent<HealthBar>();
         mHealthBar.Min = 0;
         mHealthBar.Max = Health;
+		mHealthBar.SetHealth (2);
     }
 
     #region Inventory
@@ -180,6 +181,14 @@ public class PlayerController : MonoBehaviour
             //item.OnPickup();
             Hud.OpenMessagePanel("");
         }
+
+		if (other.tag.Equals ("Weapon")) {
+			var weapon = other.GetComponent<Weapon> ();
+			if (weapon.isAttacking) {
+				TakeDamage (weapon.damage);
+				weapon.isAttacking = false;
+			}
+		}
     }
 
     private void OnTriggerExit(Collider other)

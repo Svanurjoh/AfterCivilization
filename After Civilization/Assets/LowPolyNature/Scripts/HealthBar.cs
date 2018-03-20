@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour {
 
-    public Image ImgHealthBar;
-
-    public Text TxtHealth;
-
     public int Min;
 
     public int Max;
@@ -16,6 +12,14 @@ public class HealthBar : MonoBehaviour {
     private int mCurrentValue;
 
     private float mCurrentPercent;
+
+	private RectTransform trans;
+	private RawImage img;
+
+	public void Start() {
+		trans = GetComponent<RectTransform> ();
+		img = GetComponent<RawImage> ();
+	}
 
     public void SetHealth(int health)
     {
@@ -32,9 +36,8 @@ public class HealthBar : MonoBehaviour {
                 mCurrentPercent = (float)mCurrentValue / (float)(Max - Min);
             }
 
-            TxtHealth.text = string.Format("{0} %", Mathf.RoundToInt(mCurrentPercent * 100));
-
-            ImgHealthBar.fillAmount = mCurrentPercent;
+			img.uvRect = new Rect (0, 0, mCurrentValue, 1);
+			trans.sizeDelta = new Vector2(50f * mCurrentValue, 55.8f);
         }
     }
 
@@ -47,10 +50,5 @@ public class HealthBar : MonoBehaviour {
     {
         get { return mCurrentValue;  }
     }
-
-	// Use this for initialization
-	void Start () {
-
-	}
 
 }
