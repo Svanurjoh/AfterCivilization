@@ -1,24 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController1 : MonoBehaviour
 {
     #region Private Members
 
     private Animator _animator;
 
+    private CharacterController _characterController;
+
+    private float Gravity = 20.0f;
+
+    private Vector3 _moveDirection = Vector3.zero;
+
     private IInventoryItem mCurrentItem = null;
 
     private bool mLockPickup = false;
-	private int frameCount = 0;
-	private bool isSwinging = false;
-    private HealthBar mHealthBar;
 
     #endregion
 
     #region Public Members
+
+    public float Speed = 5.0f;
+
+    public float RotationSpeed = 240.0f;
 
     public Inventory inventory;
 
@@ -26,24 +32,16 @@ public class PlayerController : MonoBehaviour
 
     public HUD Hud;
 
-	public GameObject axe;
-	public GameObject axeRot;
-
     #endregion
 
     // Use this for initialization
     void Start()
     {
         _animator = GetComponent<Animator>();
+        _characterController = GetComponent<CharacterController>();
         inventory.ItemUsed += Inventory_ItemUsed;
         inventory.ItemRemoved += Inventory_ItemRemoved;
-
-        mHealthBar = Hud.transform.Find("HealthBar").GetComponent<HealthBar>();
-        mHealthBar.Min = 0;
-        mHealthBar.Max = Health;
     }
-
-    #region Inventory
 
     private void Inventory_ItemRemoved(object sender, InventoryEventArgs e)
     {
@@ -52,7 +50,6 @@ public class PlayerController : MonoBehaviour
         GameObject goItem = (item as MonoBehaviour).gameObject;
         goItem.SetActive(true);
         goItem.transform.parent = null;
-
     }
 
     private void SetItemActive(IInventoryItem item, bool active)
@@ -109,27 +106,6 @@ public class PlayerController : MonoBehaviour
         mCurrentItem = null;
     }
 
-    #endregion
-
-    #region Health
-
-    public int Health = 100;
-
-    public void TakeDamage(int amount)
-    {
-        Health -= amount;
-		if (Health <= 0) {
-			Health = 0;
-			var scene = SceneManager.GetActiveScene ();
-			SceneManager.LoadScene (scene.name);
-		}
-
-        mHealthBar.SetHealth(Health);
-    }
-
-    #endregion
-
-
     void FixedUpdate()
     {
         // Drop item
@@ -153,18 +129,43 @@ public class PlayerController : MonoBehaviour
         }
 
         // Execute action with item
-		if(Input.GetMouseButtonDown(0) && !isSwinging)
+        if(mCurrentItem != null && Input.GetMouseButtonDown(0))
         {
             // TODO: Logic which action to execute has to come from the particular item
-			isSwinging = true;
-			frameCount = Time.frameCount;
             _animator.SetTrigger("attack_1");
         }
 
-		if (frameCount + 14 == Time.frameCount) {
-			throwAxe ();
-			isSwinging = false;
-		}
+        // Get Input for axis
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+
+        // Calculate the forward vector
+        Vector3 camForward_Dir = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 move = v * camForward_Dir + h * Camera.main.transform.right;
+
+        if (move.magnitude > 1f) move.Normalize();
+
+        // Calculate the rotation for the player
+        move = transform.InverseTransformDirection(move);
+
+        // Get Euler angles
+        float turnAmount = Mathf.Atan2(move.x, move.z);
+
+        transform.Rotate(0, turnAmount * RotationSpeed * Time.deltaTime, 0);
+
+        if (_characterController.isGrounded)
+        {
+            _animator.SetBool("run", move.magnitude > 0);
+
+            _moveDirection = transform.forward * move.magnitude;
+
+            _moveDirection *= Speed;
+
+        }
+
+        _moveDirection.y -= Gravity * Time.deltaTime;
+
+        _characterController.Move(_moveDirection * Time.deltaTime);
     }
 
     private IInventoryItem mItemToPickup = null;
@@ -195,14 +196,5 @@ public class PlayerController : MonoBehaviour
             mItemToPickup = null;
         }
     }
-
-	public bool getSwing() {
-		return isSwinging;
-	}
-
-	private void throwAxe()
-	{
-		Instantiate (axe, Hand.transform.position, Quaternion.Euler(-90, transform.localEulerAngles.y, -90));
-	}
 
 }
