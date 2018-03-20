@@ -10,6 +10,7 @@ public class GameManagerScript : MonoBehaviour {
 	public GameObject[] shipGemSlots;
 	public GameObject redGemPrefab;
 	public GameObject enemyPrefab;
+	public PlayerController player;
 
 	private int gemsDelivered = 0;
 	public static GameManagerScript instance;
@@ -18,16 +19,19 @@ public class GameManagerScript : MonoBehaviour {
 	void Start () {
 		if (instance == null) {
 			instance = this;
+			DontDestroyOnLoad (this);
 		} else {
 			Destroy (this);
 		}
+		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController>();
+
 		for (int i = 0; i < gemSpawns.Length; i++) {
 			Instantiate (redGemPrefab, gemSpawns [i].transform.position, redGemPrefab.transform.rotation);
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 5; i++) {
 			Instantiate (enemyPrefab, enemyMassSpawns [0].transform.position, enemyPrefab.transform.rotation);
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 5; i++) {
 			Instantiate (enemyPrefab, enemyMassSpawns [1].transform.position, enemyPrefab.transform.rotation);
 		}
 		for (int i = 0; i < enemySpawns.Length; i++) {

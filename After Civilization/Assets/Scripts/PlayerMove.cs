@@ -5,9 +5,10 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour {
 
 	float turnSpeed = 5.0f;
-	float moveSpeed = 10.0f;
+	float moveSpeed = 4.0f;
 	float mouseTurnMultiplier = 1;
 
+	private Animator _animator;
 	private float Gravity = 20.0f;
 
 	private float x;
@@ -20,18 +21,19 @@ public class PlayerMove : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_characterController = GetComponent<CharacterController>();
+		_animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown ("Sneak")) {
-			moveSpeed = 5.0f;
-			Debug.Log ("SNEAKING");
-		} 
-		else if(Input.GetButtonUp("Sneak")) {
-			moveSpeed = 10.0f;
+		moveSpeed = 4.0f;
+		_animator.speed = 1.0f;
+
+		if (Input.GetButton ("Sneak")) {
+			moveSpeed = 2.0f;
+			_animator.speed = 0.75f;
 		}
-		x = 0;
+
 		z = Input.GetAxis ("Vertical");
 		x = Input.GetAxis ("Horizontal");
 
@@ -44,6 +46,7 @@ public class PlayerMove : MonoBehaviour {
 		_moveDirection.y -= Gravity * Time.deltaTime;
 		_characterController.Move (_moveDirection * Time.deltaTime);
 
+		_animator.SetBool("run", (z != 0 || x != 0));
 		/*_moveDirection = new Vector3 (x, 0, z);
 
 		Vector3 forward = Vector3.Scale(transform.forward, new Vector3(1,0,1)).normalized;

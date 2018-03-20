@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         mHealthBar = Hud.transform.Find("HealthBar").GetComponent<HealthBar>();
         mHealthBar.Min = 0;
         mHealthBar.Max = Health;
-		mHealthBar.SetHealth (2);
+		mHealthBar.SetHealth (Health);
     }
 
     #region Inventory

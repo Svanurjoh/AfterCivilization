@@ -7,10 +7,12 @@ public class EnemyChase : MonoBehaviour {
 
 	private float attackDist = 1.5f;
 	private float attackSpeed = 3.0f;
+	private float moveAfterAttack = 0.5f;
 	private float headLevel = 1.5f;
 	private float lastAttack;
 	private float dist;
 	private bool canAttack;
+	private bool didAttacK;
 	private Animator _animator;
 	private NavMeshAgent _agent;
 	private Vector3 lastPost;
@@ -38,7 +40,7 @@ public class EnemyChase : MonoBehaviour {
 			if (Physics.Raycast (tmpEnemy, (tmpPlayer - tmpEnemy), out hit, 10)) {
 				if (hit.collider.tag == "Player") {
 					_agent.destination = other.transform.position;
-					//transform.LookAt(other.transform);
+					transform.LookAt(other.transform);
 				}
 			}
 
@@ -46,8 +48,17 @@ public class EnemyChase : MonoBehaviour {
 
 			if (dist <= attackDist && canAttack) {
 				_animator.SetTrigger ("attack_1");
+				_agent.speed = 0;
 				lastAttack = 0;
 				canAttack = false;
+				didAttacK = true;
+
+			}
+			if (lastAttack >= moveAfterAttack && didAttacK) {
+				didAttacK = false;
+				if (dist <= attackDist) {
+					GameManagerScript.instance.player.TakeDamage (1);
+				}
 			}
 		}
 	}
@@ -57,9 +68,13 @@ public class EnemyChase : MonoBehaviour {
 		if (!canAttack) {
 			lastAttack += Time.deltaTime;
 		}
+		if (lastAttack >= moveAfterAttack) {
+			_agent.speed = 4.5f;
+		}
 		if (lastAttack >= attackSpeed) {
 			canAttack = true;
 		}
+
 
 		/*if (lastMovement > nextMovement) {
 			NavMeshHit hit;
