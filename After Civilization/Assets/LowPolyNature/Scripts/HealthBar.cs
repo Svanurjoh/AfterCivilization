@@ -16,11 +16,6 @@ public class HealthBar : MonoBehaviour {
 	private RectTransform trans;
 	private RawImage img;
 
-	public void Start() {
-		trans = GetComponent<RectTransform> ();
-		img = GetComponent<RawImage> ();
-	}
-
     public void SetHealth(int health)
     {
         if(health != mCurrentValue)
@@ -36,6 +31,8 @@ public class HealthBar : MonoBehaviour {
                 mCurrentPercent = (float)mCurrentValue / (float)(Max - Min);
             }
 
+			trans = GetComponent<RectTransform> ();
+			img = GetComponent<RawImage> ();
 			img.uvRect = new Rect (0, 0, mCurrentValue, 1);
 			trans.sizeDelta = new Vector2(50f * mCurrentValue, 55.8f);
         }

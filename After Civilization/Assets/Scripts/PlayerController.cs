@@ -25,12 +25,14 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
-
-        mHealthBar = Hud.transform.Find("HealthBar").GetComponent<HealthBar>();
-        mHealthBar.Min = 0;
-        mHealthBar.Max = Health;
-		mHealthBar.SetHealth (Health);
     }
+
+	void Awake() {
+		mHealthBar = GameObject.FindGameObjectWithTag("Healthbar").GetComponent<HealthBar>();
+		mHealthBar.Min = 0;
+		mHealthBar.Max = Health;
+		mHealthBar.SetHealth (Health);
+	}
 
     public int Health = 100;
 
@@ -39,8 +41,7 @@ public class PlayerController : MonoBehaviour
         Health -= amount;
 		if (Health <= 0) {
 			Health = 0;
-			var scene = SceneManager.GetActiveScene ();
-			SceneManager.LoadScene (scene.name);
+			SceneManager.LoadScene ("EndMenu");
 		}
 
         mHealthBar.SetHealth(Health);

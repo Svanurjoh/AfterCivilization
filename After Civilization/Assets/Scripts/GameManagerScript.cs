@@ -26,7 +26,6 @@ public class GameManagerScript : MonoBehaviour {
 		} else {
 			Destroy (this);
 		}
-		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController>();
 
 		for (int i = 0; i < gemSpawns.Length; i++) {
 			Instantiate (redGemPrefab, gemSpawns [i].transform.position, redGemPrefab.transform.rotation);
@@ -46,6 +45,10 @@ public class GameManagerScript : MonoBehaviour {
 	void Update () {
 		if (gemsDelivered == maxGems) {
 			SceneManager.LoadScene ("EndMenu");
+		}
+
+		if (null == player) {
+			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController> ();
 		}
 	}
 
