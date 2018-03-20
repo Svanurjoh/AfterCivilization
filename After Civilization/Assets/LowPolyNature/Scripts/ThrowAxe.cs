@@ -24,6 +24,7 @@ public class ThrowAxe : MonoBehaviour {
 	{
 		if (other.gameObject.tag == "EnemyMesh") {
 			Destroy (other.transform.parent.gameObject);
+			Destroy (this.gameObject);
 		}
 	}
 
