@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Axe : InventoryItemBase {
+public class Axe : MonoBehaviour {
 
 	private bool isTouching = false;
 	private PlayerController _playerController;
@@ -11,25 +11,15 @@ public class Axe : InventoryItemBase {
 		_playerController = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController>();
 	}
 
-    public override string Name
-    {
-        get
-        {
-            return "Axe";
-        }
-    }
-
-    public override void OnUse()
-    {
-        base.OnUse();
-    }
+	void Update() {
+	}
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.tag == "EnemyMesh" && _playerController.getSwing()) {
+		/*if (other.gameObject.tag == "EnemyMesh" && _playerController.getSwing()) {
 			Debug.Log (_playerController.getSwing ());
 			Destroy (other.transform.parent.gameObject);
-		}
+		}*/
 	}
 
 	public bool touching()

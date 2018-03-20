@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour
 
     public HUD Hud;
 
+	public GameObject axe;
+	public GameObject axeRot;
+
     #endregion
 
     // Use this for initialization
@@ -151,7 +154,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Execute action with item
-        if(Input.GetMouseButtonDown(0))
+		if(Input.GetMouseButtonDown(0) && !isSwinging)
         {
             // TODO: Logic which action to execute has to come from the particular item
 			isSwinging = true;
@@ -160,6 +163,7 @@ public class PlayerController : MonoBehaviour
         }
 
 		if (frameCount + 14 == Time.frameCount) {
+			throwAxe ();
 			isSwinging = false;
 		}
     }
@@ -203,6 +207,11 @@ public class PlayerController : MonoBehaviour
 
 	public bool getSwing() {
 		return isSwinging;
+	}
+
+	private void throwAxe()
+	{
+		Instantiate (axe, Hand.transform.position, Quaternion.Euler(-90, transform.localEulerAngles.y, -90));
 	}
 
 }
