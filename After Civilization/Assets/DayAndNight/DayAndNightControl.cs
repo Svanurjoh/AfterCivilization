@@ -28,7 +28,7 @@ public class DayAndNightControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		UpdateLight();
-		CheckTimeOfDay ();
+		//CheckTimeOfDay ();
 		currentTime += (Time.deltaTime / SecondsInAFullDay) * timeMultiplier;
 		if (currentTime >= 1) {
 			currentTime = 0;//once we hit "midnight"; any time after that sunrise will begin.
@@ -38,9 +38,9 @@ public class DayAndNightControl : MonoBehaviour {
 
 	void UpdateLight()
 	{
-		StarDome.transform.Rotate (new Vector3 (0, 0, 2f * Time.deltaTime));
+		StarDome.transform.Rotate (new Vector3 (0, 0, 1f * Time.deltaTime));
 
-		directionalLight.transform.localRotation = Quaternion.Euler ((currentTime * 360f) - 90, 170, 0);
+		directionalLight.transform.localRotation = Quaternion.Euler ((currentTime * 360f) - 90, 150, 0);
 		//^^ we rotate the sun 360 degrees around the x axis, or one full rotation times the current time variable. we subtract 90 from this to make it go up
 		//in increments of 0.25.
 
@@ -48,24 +48,23 @@ public class DayAndNightControl : MonoBehaviour {
 
 		float intensityMultiplier = 1;
 
-		if (currentTime <= 0.23f || currentTime >= 0.75f) 
+		if (currentTime <= 0.1f || currentTime >= 0.9f) 
 		{
 			intensityMultiplier = 0; //when the sun is below the horizon, or setting, the intensity needs to be 0 or else it'll look weird
 			starMat.color = new Color(1,1,1,Mathf.Lerp(1,0,Time.deltaTime));
+			Debug.Log ("First Statement");
 		}
-		else if (currentTime <= 0.25f) 
+		else if (currentTime <= 0.9f) 
 		{
-			intensityMultiplier = Mathf.Clamp01((currentTime - 0.23f) * (1 / 0.02f));
-			starMat.color = new Color(1,1,1,Mathf.Lerp(0,1,Time.deltaTime));
-		}
-		else if (currentTime <= 0.73f) 
-		{
-			intensityMultiplier = Mathf.Clamp01(1 - ((currentTime - 0.73f) * (1 / 0.02f)));
+			intensityMultiplier = Mathf.Clamp01(currentTime - 0.1f);
+			starMat.color = new Color(1,1,1,Mathf.Lerp(1,0,Time.deltaTime));
+			Debug.Log ("Third Statement");
 		}
 
 		directionalLight.intensity = lightIntensity * intensityMultiplier;
 	}
 
+	/*
 	void CheckTimeOfDay ()
 	{
 	if (currentTime < 0.25f || currentTime > 1f) {
@@ -90,4 +89,5 @@ public class DayAndNightControl : MonoBehaviour {
 			DayState = "Night";
 		}
 	}
+	*/
 }
