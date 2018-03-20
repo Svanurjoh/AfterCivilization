@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour {
 
@@ -12,6 +13,8 @@ public class GameManagerScript : MonoBehaviour {
 	public GameObject enemyPrefab;
 
 	private int gemsDelivered = 0;
+	private int maxGems = 6;
+
 	public static GameManagerScript instance;
 
 	// Use this for initialization
@@ -27,7 +30,7 @@ public class GameManagerScript : MonoBehaviour {
 		for (int i = 0; i < 20; i++) {
 			Instantiate (enemyPrefab, enemyMassSpawns [0].transform.position, enemyPrefab.transform.rotation);
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 10; i++) {
 			Instantiate (enemyPrefab, enemyMassSpawns [1].transform.position, enemyPrefab.transform.rotation);
 		}
 		for (int i = 0; i < enemySpawns.Length; i++) {
@@ -37,7 +40,9 @@ public class GameManagerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-			
+		if (gemsDelivered == maxGems) {
+			SceneManager.LoadScene ("EndMenu");
+		}
 	}
 
 	public int getGemsDelivered() {
