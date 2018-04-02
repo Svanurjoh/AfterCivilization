@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 	private bool canAttack;
 	private float attackSpeed = 3.0f;
 
+	public int Health = 100;
     public GameObject rightHand;
 	public GameObject leftHand;
     public HUD Hud;
@@ -32,9 +33,7 @@ public class PlayerController : MonoBehaviour
 		mHealthBar.Min = 0;
 		mHealthBar.Max = Health;
 		mHealthBar.SetHealth (Health);
-	}
-
-    public int Health = 100;
+	} 
 
     public void TakeDamage(int amount)
     {
