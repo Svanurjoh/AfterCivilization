@@ -24,6 +24,7 @@ public class GameManagerScript : MonoBehaviour {
 			instance = this;
 			DontDestroyOnLoad (this);
 		} else {
+			Debug.LogError ("Two GameManager's Active, fix this ASAP!!");
 			Destroy (this);
 		}
 
@@ -48,7 +49,30 @@ public class GameManagerScript : MonoBehaviour {
 		}
 
 		if (null == player) {
-			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController> ();
+			var tmp = GameObject.FindGameObjectWithTag ("Player");
+			if (null != tmp) {
+				player = tmp.GetComponent<PlayerController> ();
+			}
+		}
+
+		var enemies = FindObjectsOfType<EnemyChase> ();
+		float leastDist = 100f;
+		EnemyChase closest = null;
+		for (var i = 0; i < enemies.Length; i++) {
+			var enemy = enemies [i];
+			enemy.canShout = false;
+			float distToPLayer = Vector3.Distance (enemy.transform.position, player.transform.position);
+			if (i == 0) {
+				leastDist = distToPLayer;
+			} else {
+				if (distToPLayer <= leastDist) {
+					leastDist = distToPLayer;
+					closest = enemy;
+				}
+			}
+		}
+		if (null != closest) {
+			closest.canShout = true;
 		}
 	}
 

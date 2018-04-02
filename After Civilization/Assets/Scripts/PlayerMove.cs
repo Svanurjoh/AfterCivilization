@@ -6,6 +6,7 @@ public class PlayerMove : MonoBehaviour {
 
 	float turnSpeed = 5.0f;
 	float moveSpeed = 4.0f;
+	float noise;
 	float mouseTurnMultiplier = 1;
 
 	private Animator _animator;
@@ -27,10 +28,12 @@ public class PlayerMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		moveSpeed = 4.0f;
+		noise = 5;
 		_animator.speed = 1.0f;
 
 		if (Input.GetButton ("Sneak")) {
 			moveSpeed = 2.0f;
+			noise = 2;
 			_animator.speed = 0.75f;
 		}
 
