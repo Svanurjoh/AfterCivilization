@@ -31,15 +31,6 @@ public class GameManagerScript : MonoBehaviour {
 		for (int i = 0; i < gemSpawns.Length; i++) {
 			Instantiate (redGemPrefab, gemSpawns [i].transform.position, redGemPrefab.transform.rotation);
 		}
-		for (int i = 0; i < 5; i++) {
-			Instantiate (enemyPrefab, enemyMassSpawns [0].transform.position, enemyPrefab.transform.rotation);
-		}
-		for (int i = 0; i < 10; i++) {
-			Instantiate (enemyPrefab, enemyMassSpawns [1].transform.position, enemyPrefab.transform.rotation);
-		}
-		for (int i = 0; i < enemySpawns.Length; i++) {
-			Instantiate (enemyPrefab, enemySpawns [i].transform.position, enemyPrefab.transform.rotation);
-		}
 	}
 	
 	// Update is called once per frame
