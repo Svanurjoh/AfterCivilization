@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
         Health -= amount;
 		if (Health <= 0) {
 			Health = 0;
-			SceneManager.LoadScene ("EndMenu");
+			isDead ();
 		}
 
         mHealthBar.SetHealth(Health);
@@ -102,5 +102,10 @@ public class PlayerController : MonoBehaviour
 	private void throwAxe()
 	{
 		Instantiate (axe, rightHand.transform.position, Quaternion.Euler(-90, transform.localEulerAngles.y, -90));
+	}
+
+	private void isDead() {
+		GameManagerScript.instance.resetAllLevels ();
+		this.transform.position = new Vector3 (24, 0, -10);
 	}
 }

@@ -6,20 +6,61 @@ using UnityEngine.SceneManagement;
 public class GameManagerScript : MonoBehaviour {
 
 	public GameObject[] gemSpawns;
-	public GameObject[] enemySpawns;
-	public GameObject[] enemyMassSpawns;
 	public GameObject[] shipGemSlots;
+	public GameObject level1;
+	public GameObject level2;
+	public GameObject level3;
+	public GameObject level4;
+	public GameObject level5;
+	public GameObject level6;
 	public GameObject redGemPrefab;
-	public GameObject enemyPrefab;
 	public PlayerController player;
 
 	private int gemsDelivered = 0;
 	private int maxGems = 6;
+	private bool isPaused = false;
+
+	#region level varibles
+
+	//Gems
+	private GameObject gem1;
+	private GameObject gem2;
+	private GameObject gem3;
+	private GameObject gem4;
+	private GameObject gem5;
+	private GameObject gem6;
+
+	//Levels
+	private GameObject lvl1;
+	private GameObject lvl2;
+	private GameObject lvl3;
+	private GameObject lvl4;
+	private GameObject lvl5;
+	private GameObject lvl6;
+
+	//Bool variables if gem is delivered
+	private bool gem1delivered = false;
+	private bool gem2delivered = false;
+	private bool gem3delivered = false;
+	private bool gem4delivered = false;
+	private bool gem5delivered = false;
+	private bool gem6delivered = false;
+
+	#endregion
 
 	public static GameManagerScript instance;
 
 	// Use this for initialization
 	void Start () {
+		Cursor.visible = false;
+
+		lvl1 = Instantiate (level1, level1.transform.position, level1.transform.rotation);
+		lvl2 = Instantiate (level2, level2.transform.position, level2.transform.rotation);
+		lvl3 = Instantiate (level3, level3.transform.position, level3.transform.rotation);
+		lvl4 = Instantiate (level4, level4.transform.position, level4.transform.rotation);
+		lvl5 = Instantiate (level5, level5.transform.position, level5.transform.rotation);
+		lvl6 = Instantiate (level6, level6.transform.position, level6.transform.rotation);
+
 		if (instance == null) {
 			instance = this;
 			DontDestroyOnLoad (this);
@@ -28,9 +69,13 @@ public class GameManagerScript : MonoBehaviour {
 			Destroy (this);
 		}
 
-		for (int i = 0; i < gemSpawns.Length; i++) {
-			Instantiate (redGemPrefab, gemSpawns [i].transform.position, redGemPrefab.transform.rotation);
-		}
+		//Gems spawned
+		gem1 = Instantiate (redGemPrefab, gemSpawns [0].transform.position, redGemPrefab.transform.rotation);
+		gem2 = Instantiate (redGemPrefab, gemSpawns [1].transform.position, redGemPrefab.transform.rotation);
+		gem3 = Instantiate (redGemPrefab, gemSpawns [2].transform.position, redGemPrefab.transform.rotation);
+		gem4 = Instantiate (redGemPrefab, gemSpawns [3].transform.position, redGemPrefab.transform.rotation);
+		gem5 = Instantiate (redGemPrefab, gemSpawns [4].transform.position, redGemPrefab.transform.rotation);
+		gem6 = Instantiate (redGemPrefab, gemSpawns [5].transform.position, redGemPrefab.transform.rotation);
 	}
 	
 	// Update is called once per frame
@@ -66,6 +111,11 @@ public class GameManagerScript : MonoBehaviour {
 		if (null != closest) {
 			closest.canShout = true;
 		}
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			isPaused = !isPaused;
+		}
+		Time.timeScale = isPaused ? 0 : 1;
 	}
 
 	public int getGemsDelivered() {
@@ -75,5 +125,34 @@ public class GameManagerScript : MonoBehaviour {
 	public void deliverGem(GameObject gem) {
 		gem.transform.position = shipGemSlots [gemsDelivered].transform.position;
 		gemsDelivered++;
+		if (gem1 == gem)
+			gem1delivered = true;
+		if (gem2 == gem)
+			gem2delivered = true;
+		if (gem3 == gem)
+			gem3delivered = true;
+		if (gem4 == gem)
+			gem4delivered = true;
+		if (gem5 == gem)
+			gem5delivered = true;
+		if (gem6 == gem)
+			gem6delivered = true;
+	}
+
+	public void resetAllLevels ()
+	{
+		Destroy (lvl1);
+		Destroy (lvl2);
+		Destroy (lvl3);
+		Destroy (lvl4);
+		Destroy (lvl5);
+		Destroy (lvl6);
+
+		lvl1 = Instantiate (level1, level1.transform.position, level1.transform.rotation);
+		lvl2 = Instantiate (level2, level2.transform.position, level2.transform.rotation);
+		lvl3 = Instantiate (level3, level3.transform.position, level3.transform.rotation);
+		lvl4 = Instantiate (level4, level4.transform.position, level4.transform.rotation);
+		lvl5 = Instantiate (level5, level5.transform.position, level5.transform.rotation);
+		lvl6 = Instantiate (level6, level6.transform.position, level6.transform.rotation);
 	}
 }
