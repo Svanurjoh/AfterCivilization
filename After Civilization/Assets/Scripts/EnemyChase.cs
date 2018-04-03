@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEditor;
 
 public class EnemyChase : MonoBehaviour {
 
-	private float attackDist = 1.5f;
+	private float attackDist = 0.5f;
 	private float attackSpeed = 3.0f;
 	private float moveAfterAttack = 0.5f;
 	private float headLevel = 1.5f;
@@ -20,6 +21,7 @@ public class EnemyChase : MonoBehaviour {
 	private float dist;
 	private bool canAttack;
 	private bool didAttacK;
+	private bool canHear;
 	private Animator _animator;
 	private NavMeshAgent _agent;
 	private Vector3 lastPost;
@@ -40,17 +42,29 @@ public class EnemyChase : MonoBehaviour {
 			tmpEnemy.y += headLevel;
 			tmpPlayer.y += headLevel;
 
-			RaycastHit hit;
-			int layerMask = ~(1 << 2);
-			if (Physics.Raycast (tmpEnemy, (tmpPlayer - tmpEnemy), out hit, 10, layerMask)) {
-				if (hit.collider.tag == "Player") {
-					_agent.destination = other.transform.position;
-					transform.LookAt(other.transform);
-					CallForHelp (other.transform);
+			//var test = Vector3.Angle (transform.position, other.transform.position);
+			Vector3 targetDir = tmpEnemy - tmpPlayer;
+			float angle = Vector2.Angle (new Vector2(targetDir.x, targetDir.z), new Vector2(transform.forward.x, transform.forward.z));
+			dist = Vector3.Distance (tmpPlayer, tmpEnemy);
+			canHear = true;
+
+			if (angle < 60f) { // Behinde
+				var player = other.GetComponent<PlayerMove>();
+				var noiseLevel = dist / player.GetNoise ();
+				if (noiseLevel >= 0.6f) {
+					canHear = false;
 				}
 			}
 
-			dist = Vector3.Distance (tmpPlayer, tmpEnemy);
+			RaycastHit hit;
+			int layerMask = ~(1 << 2);
+			if (canHear && Physics.Raycast (tmpEnemy, (tmpPlayer - tmpEnemy), out hit, 10, layerMask)) {
+				if (hit.collider.tag == "Player") {
+					//_agent.destination = other.transform.position;
+					//transform.LookAt(other.transform);
+					CallForHelp (other.transform);
+				}
+			}
 
 			if (dist <= attackDist && canAttack) {
 				_animator.SetTrigger ("attack_1");
@@ -94,7 +108,7 @@ public class EnemyChase : MonoBehaviour {
 
 			for (var i = 0; i < enemies.Length; i++) {
 				var enemy = enemies [i];
-				if (Vector3.Distance (transform.position, enemy.transform.position) <= shoutRadius) {
+				if (!IsSelf(enemy) && Vector3.Distance (transform.position, enemy.transform.position) <= shoutRadius) {
 					enemy.GetComponent<EnemyChase> ().AnswerHelp (player);
 				}
 			}
@@ -104,6 +118,11 @@ public class EnemyChase : MonoBehaviour {
 	public void AnswerHelp(Transform player) {
 		if (!isChasing) {
 			_agent.destination = player.position;
+			transform.LookAt(player.transform);
 		}
+	}
+
+	private bool IsSelf(GameObject comp) {
+		return comp.Equals (this.gameObject);
 	}
 }

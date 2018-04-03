@@ -55,6 +55,7 @@ public class GameManagerScript : MonoBehaviour {
 			float distToPLayer = Vector3.Distance (enemy.transform.position, player.transform.position);
 			if (i == 0) {
 				leastDist = distToPLayer;
+				closest = enemy;
 			} else {
 				if (distToPLayer <= leastDist) {
 					leastDist = distToPLayer;

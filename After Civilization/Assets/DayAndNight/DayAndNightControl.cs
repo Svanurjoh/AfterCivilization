@@ -52,13 +52,11 @@ public class DayAndNightControl : MonoBehaviour {
 		{
 			intensityMultiplier = 0; //when the sun is below the horizon, or setting, the intensity needs to be 0 or else it'll look weird
 			starMat.color = new Color(1,1,1,Mathf.Lerp(1,0,Time.deltaTime));
-			Debug.Log ("First Statement");
 		}
 		else if (currentTime <= 0.9f) 
 		{
 			intensityMultiplier = Mathf.Clamp01(currentTime - 0.1f);
 			starMat.color = new Color(1,1,1,Mathf.Lerp(1,0,Time.deltaTime));
-			Debug.Log ("Third Statement");
 		}
 
 		directionalLight.intensity = lightIntensity * intensityMultiplier;

@@ -9,7 +9,13 @@ public class PlayerMove : MonoBehaviour {
 	float noise;
 	float mouseTurnMultiplier = 1;
 
+	public AudioClip walking;
+	public AudioClip running;
+
 	private Animator _animator;
+	private AudioSource _Walking;
+	private AudioSource _Running;
+	private AudioSource _Current;
 	private float Gravity = 20.0f;
 
 	private float x;
@@ -23,22 +29,47 @@ public class PlayerMove : MonoBehaviour {
 	void Start () {
 		_characterController = GetComponent<CharacterController>();
 		_animator = GetComponent<Animator>();
+		_Walking = AddAudio (walking, true, 1f, 0.75f);
+		_Running = AddAudio (running, true, 1f, 0.75f);
+		_Current = _Running;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		moveSpeed = 4.0f;
-		noise = 5;
+		noise = 1;
 		_animator.speed = 1.0f;
 
+		z = Input.GetAxis ("Vertical");
+		x = Input.GetAxis ("Horizontal");
+
+		if (x != 0 || z != 0) {
+			noise = 4;
+		}
+
+	
+		if (Input.GetButtonDown ("Sneak")) {
+			_Current.Stop ();
+			_Current = _Walking;
+		} else if (Input.GetButtonUp ("Sneak")) {
+			_Current.Stop ();
+			_Current = _Running;
+		}
 		if (Input.GetButton ("Sneak")) {
 			moveSpeed = 2.0f;
 			noise = 2;
 			_animator.speed = 0.75f;
 		}
 
-		z = Input.GetAxis ("Vertical");
-		x = Input.GetAxis ("Horizontal");
+		//_Audio.volume = noise / 4f;
+
+		if (!_Current.isPlaying) {
+			_Current.Play ();
+		}
+		if (x == 0 && z == 0) {
+			_Current.Stop ();
+		}
+
 
 		if (_characterController.isGrounded) {
 			_moveDirection = new Vector3 (x, 0, z);
@@ -76,6 +107,10 @@ public class PlayerMove : MonoBehaviour {
 		transform.Rotate(new Vector3 (0, rotate, 0));
 	}
 
+	public float GetNoise() {
+		return noise;
+	}
+
 	/*private float hspeed = 10f;
 	private float vspeed = 0f;
 	private float gravity = 1f;
@@ -108,4 +143,14 @@ public class PlayerMove : MonoBehaviour {
 		Debug.Log (rotate);
 		transform.Rotate(new Vector3 (0, rotate, 0));
 	}*/
+
+	private AudioSource AddAudio(AudioClip clip, bool loop, float vol, float pitch) {
+		var newAudio = gameObject.AddComponent<AudioSource>();
+		newAudio.clip = clip;
+		newAudio.loop = loop;
+		newAudio.volume = vol;
+		newAudio.pitch = pitch;
+
+		return newAudio;
+	}
 }
