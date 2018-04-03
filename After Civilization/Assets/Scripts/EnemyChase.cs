@@ -60,8 +60,8 @@ public class EnemyChase : MonoBehaviour {
 			int layerMask = ~(1 << 2);
 			if (canHear && Physics.Raycast (tmpEnemy, (tmpPlayer - tmpEnemy), out hit, 10, layerMask)) {
 				if (hit.collider.tag == "Player") {
-					//_agent.destination = other.transform.position;
-					//transform.LookAt(other.transform);
+					_agent.destination = other.transform.position;
+					transform.LookAt(other.transform);
 					CallForHelp (other.transform);
 				}
 			}
