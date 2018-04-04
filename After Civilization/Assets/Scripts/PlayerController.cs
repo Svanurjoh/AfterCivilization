@@ -117,6 +117,10 @@ public class PlayerController : MonoBehaviour
 			GemInArm = null;
 			GameManagerScript.instance.holdingGem.enabled = false;
 		}
+		Health = GameManagerScript.instance.GetPlayerHealth ();
+		AxeCount = GameManagerScript.instance.GetPlayerAxes ();
+		GameObject.FindGameObjectWithTag ("AxeCounter").GetComponent<Text> ().text = AxeCount.ToString ();
+		mHealthBar.SetHealth (Health);
 		GameManagerScript.instance.resetAllLevels ();
 		this.transform.position = new Vector3 (24, 0, -10);
 	}

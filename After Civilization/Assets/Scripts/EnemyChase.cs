@@ -6,11 +6,11 @@ using UnityEditor;
 
 public class EnemyChase : MonoBehaviour {
 
-	private float attackDist = 1f;
+	private float attackDist = 1.5f;
 	private float attackSpeed = 3.0f;
 	private float moveAfterAttack = 0f;
 	private float headLevel = 1.5f;
-	private float agentSpeed = 5f;
+	private float agentSpeed = 6f;
 	private int agentDamage = 1;
 	private float shoutRadius = 10f;
 	private float shoutCooldown = 3f;
@@ -34,6 +34,7 @@ public class EnemyChase : MonoBehaviour {
 		_audio.volume = 0.5f;
 		_agent = GetComponent<NavMeshAgent> ();
 		_animator = GetComponent<Animator>();
+		_agent.speed = agentSpeed;
 	}
 
 	void OnTriggerStay(Collider other) {
@@ -43,7 +44,6 @@ public class EnemyChase : MonoBehaviour {
 			tmpEnemy.y += headLevel;
 			tmpPlayer.y += headLevel;
 
-			//var test = Vector3.Angle (transform.position, other.transform.position);
 			Vector3 targetDir = tmpEnemy - tmpPlayer;
 			float angle = Vector2.Angle (new Vector2(targetDir.x, targetDir.z), new Vector2(transform.forward.x, transform.forward.z));
 			dist = Vector3.Distance (tmpPlayer, tmpEnemy);
@@ -69,7 +69,7 @@ public class EnemyChase : MonoBehaviour {
 
 			if (dist <= attackDist && canAttack) {
 				_animator.SetTrigger ("attack_1");
-				_agent.speed = 0;
+				//_agent.speed = 0;
 				lastAttack = 0;
 				canAttack = false;
 				didAttacK = true;

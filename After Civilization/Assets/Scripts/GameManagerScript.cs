@@ -25,6 +25,9 @@ public class GameManagerScript : MonoBehaviour {
 	private int maxGems = 6;
 	private bool isPaused = false;
 
+	private int playerAxes;
+	private int playerHealth;
+
 	#region level varibles
 
 	private bool gem1delivered = false;
@@ -91,6 +94,8 @@ public class GameManagerScript : MonoBehaviour {
 			var tmp = GameObject.FindGameObjectWithTag ("Player");
 			if (null != tmp) {
 				player = tmp.GetComponent<PlayerController> ();
+				playerHealth = player.Health;
+				playerAxes = player.AxeCount;
 			}
 		}
 
@@ -164,6 +169,9 @@ public class GameManagerScript : MonoBehaviour {
 			gem5delivered = true;
 		if (gem == gem6)
 			gem6delivered = true;
+
+		playerHealth = player.Health;
+		playerAxes = player.AxeCount;
 	}
 
 	public void resetAllLevels ()
@@ -210,5 +218,12 @@ public class GameManagerScript : MonoBehaviour {
 
 	public bool getIsPaused() {
 		return isPaused;
+	}
+
+	public int GetPlayerAxes() {
+		return playerAxes;
+	}
+	public int GetPlayerHealth() {
+		return playerHealth;
 	}
 }
