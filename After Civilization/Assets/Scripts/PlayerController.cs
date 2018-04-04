@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour
 			GemInArm = other.gameObject;
 			holdingGem = true;
 			GameManagerScript.instance.holdingGem.enabled = true;
+			GameManagerScript.instance.gemPickedUp (GemInArm);
 		}
 
 		if (other.tag.Equals ("Weapon")) {

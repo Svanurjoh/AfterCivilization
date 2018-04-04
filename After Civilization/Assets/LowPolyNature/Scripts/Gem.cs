@@ -7,7 +7,6 @@ public class Gem : MonoBehaviour {
 	private Transform originalPosition;
 
 	void Awake() {
-		originalPosition = transform;
 	}
 
 	void Update() {
