@@ -8,9 +8,9 @@ public class EnemyChase : MonoBehaviour {
 
 	private float attackDist = 1f;
 	private float attackSpeed = 3.0f;
-	private float moveAfterAttack = 0.5f;
+	private float moveAfterAttack = 0f;
 	private float headLevel = 1.5f;
-	private float agentSpeed = 4.5f;
+	private float agentSpeed = 5f;
 	private int agentDamage = 1;
 	private float shoutRadius = 10f;
 	private float shoutCooldown = 3f;
@@ -31,6 +31,7 @@ public class EnemyChase : MonoBehaviour {
 	void Start()
 	{
 		_audio = GetComponent<AudioSource> ();
+		_audio.volume = 0.5f;
 		_agent = GetComponent<NavMeshAgent> ();
 		_animator = GetComponent<Animator>();
 	}

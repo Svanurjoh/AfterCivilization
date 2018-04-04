@@ -104,6 +104,9 @@ public class PlayerController : MonoBehaviour
 	private void throwAxe()
 	{
 		Instantiate (axe, rightHand.transform.position, Quaternion.Euler (-90, transform.localEulerAngles.y, -90));
+		if (AxeCount <= 0) {
+			GameObject.FindGameObjectWithTag ("EquipedAxe").gameObject.SetActive (true);
+		}
 	}
 
 	private void isDead() {
