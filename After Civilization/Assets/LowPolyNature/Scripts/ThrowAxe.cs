@@ -7,17 +7,29 @@ public class ThrowAxe : MonoBehaviour {
 	private bool isTouching = false;
 	private PlayerController _playerController;
 	private Vector3 forward;
+	private float alive;
 
 	void Awake() {
 		_playerController = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController>();
 		forward = _playerController.transform.forward;
+		alive = 0f;
 	}
 
 	void Update() {
-		
-		transform.position += forward * Time.deltaTime * 10;
+		if (alive <= 0.15f) {
+			forward.y += Time.deltaTime;
+		} else {
+			forward.y -= Time.deltaTime;
+		}
+		alive += Time.deltaTime;
 
-		transform.Rotate (Vector3.up * Time.deltaTime * 100, Space.Self);
+		transform.position += forward * Time.deltaTime * 15;
+
+		transform.Rotate (Vector3.up * Time.deltaTime * 800, Space.Self);
+
+		if (transform.position.y <= 0) {
+			Destroy (this.gameObject);
+		}
 	}
 
 	void OnTriggerEnter(Collider other)

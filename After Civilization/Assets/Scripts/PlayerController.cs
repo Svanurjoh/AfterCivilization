@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
 			lastAttack = 0;
 			frameCount = Time.frameCount;
         }
-		if (frameCount + 14 == Time.frameCount) {
+		if (frameCount + 6 == Time.frameCount) {
 			throwAxe ();
 		}
 

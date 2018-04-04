@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class EnemyChase : MonoBehaviour {
 
-	private float attackDist = 0.5f;
+	private float attackDist = 1f;
 	private float attackSpeed = 3.0f;
 	private float moveAfterAttack = 0.5f;
 	private float headLevel = 1.5f;
