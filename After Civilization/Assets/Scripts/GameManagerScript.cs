@@ -25,6 +25,13 @@ public class GameManagerScript : MonoBehaviour {
 
 	#region level varibles
 
+	private bool gem1delivered = false;
+	private bool gem2delivered = false;
+	private bool gem3delivered = false;
+	private bool gem4delivered = false;
+	private bool gem5delivered = false;
+	private bool gem6delivered = false;
+
 	//Gems
 	private GameObject gem1;
 	private GameObject gem2;
@@ -121,6 +128,18 @@ public class GameManagerScript : MonoBehaviour {
 	public void deliverGem(GameObject gem) {
 		gem.transform.position = shipGemSlots [gemsDelivered].transform.position;
 		gemsDelivered++;
+		if (gem == gem1)
+			gem1delivered = true;
+		if (gem == gem2)
+			gem2delivered = true;
+		if (gem == gem3)
+			gem3delivered = true;
+		if (gem == gem4)
+			gem4delivered = true;
+		if (gem == gem5)
+			gem5delivered = true;
+		if (gem == gem6)
+			gem6delivered = true;
 	}
 
 	public void resetAllLevels ()
@@ -138,6 +157,19 @@ public class GameManagerScript : MonoBehaviour {
 		lvl4 = Instantiate (level4, level4.transform.position, level4.transform.rotation);
 		lvl5 = Instantiate (level5, level5.transform.position, level5.transform.rotation);
 		lvl6 = Instantiate (level6, level6.transform.position, level6.transform.rotation);
+
+		if (!gem1delivered)
+			gem1.transform.position = gemSpawns [0].transform.position;
+		if (!gem2delivered)
+			gem2.transform.position = gemSpawns [1].transform.position;
+		if (!gem3delivered)
+			gem3.transform.position = gemSpawns [2].transform.position;
+		if (!gem4delivered)
+			gem4.transform.position = gemSpawns [3].transform.position;
+		if (!gem5delivered)
+			gem5.transform.position = gemSpawns [4].transform.position;
+		if (!gem6delivered)
+			gem6.transform.position = gemSpawns [5].transform.position;
 	}
 
 	public bool getIsPaused() {
