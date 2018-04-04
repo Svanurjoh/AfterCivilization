@@ -28,6 +28,9 @@ public class GameManagerScript : MonoBehaviour {
 	private int playerAxes;
 	private int playerHealth;
 
+	private float timer = 0f;
+	private Text Timer;
+
 	#region level varibles
 
 	private bool gem1delivered = false;
@@ -82,10 +85,22 @@ public class GameManagerScript : MonoBehaviour {
 		gem4 = Instantiate (redGemPrefab, gemSpawns [3].transform.position, redGemPrefab.transform.rotation);
 		gem5 = Instantiate (redGemPrefab, gemSpawns [4].transform.position, redGemPrefab.transform.rotation);
 		gem6 = Instantiate (redGemPrefab, gemSpawns [5].transform.position, redGemPrefab.transform.rotation);
+
+		Timer = GameObject.FindGameObjectWithTag ("Timer").GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		timer += Time.deltaTime;
+
+		int min = (int)timer / 60;
+		int sec = (int)timer % 60;
+		string nil = "";
+		if (sec < 10) {
+			nil = "0";
+		}
+		Timer.text = min + ":" + nil + sec;
+
 		if (gemsDelivered == maxGems) {
 			SceneManager.LoadScene ("EndMenu");
 		}
