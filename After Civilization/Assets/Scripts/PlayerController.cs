@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 	private bool canAttack;
 	private float attackSpeed = 3.0f;
 
+	private Slider AxeCooldown;
 	public int AxeCount = 20;
 	public int Health = 100;
     public GameObject rightHand;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start() {
         _animator = GetComponent<Animator>();
+		AxeCooldown = GameObject.FindGameObjectWithTag ("AxeCooldown").GetComponent<Slider>();
     }
 
 	void Awake() {
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
 		//Attack cooldown
 		if (!canAttack) {
 			lastAttack += Time.deltaTime;
+			AxeCooldown.value = attackSpeed - lastAttack;
 		}
 		if (lastAttack >= attackSpeed) {
 			canAttack = true;
