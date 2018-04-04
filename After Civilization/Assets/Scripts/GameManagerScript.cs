@@ -54,8 +54,6 @@ public class GameManagerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Cursor.visible = false;
-
 		lvl1 = Instantiate (level1, level1.transform.position, level1.transform.rotation);
 		lvl2 = Instantiate (level2, level2.transform.position, level2.transform.rotation);
 		lvl3 = Instantiate (level3, level3.transform.position, level3.transform.rotation);
@@ -119,6 +117,8 @@ public class GameManagerScript : MonoBehaviour {
 			isPaused = !isPaused;
 		}
 		Time.timeScale = isPaused ? 0 : 1;
+		Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
+		Cursor.visible = isPaused ? true : false;
 	}
 
 	public int getGemsDelivered() {
