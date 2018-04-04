@@ -23,7 +23,7 @@ public class ThrowAxe : MonoBehaviour {
 		}
 		alive += Time.deltaTime;
 
-		transform.position += forward * Time.deltaTime * 15;
+		transform.position += forward * Time.deltaTime * 25;
 
 		transform.Rotate (Vector3.up * Time.deltaTime * 800, Space.Self);
 
