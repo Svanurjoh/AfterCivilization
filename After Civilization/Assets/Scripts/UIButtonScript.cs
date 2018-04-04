@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class UIButtonScript : MonoBehaviour {
 
 	void Awake() {
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 	}
 
 	public void NewGameButton()
