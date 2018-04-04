@@ -36,75 +36,56 @@ public class PlayerMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		moveSpeed = 4.0f;
-		noise = 1;
-		_animator.speed = 1.0f;
+		if (!GameManagerScript.instance.getIsPaused ()) {
+			moveSpeed = 4.0f;
+			noise = 1;
+			_animator.speed = 1.0f;
 
-		z = Input.GetAxis ("Vertical");
-		x = Input.GetAxis ("Horizontal");
+			z = Input.GetAxis ("Vertical");
+			x = Input.GetAxis ("Horizontal");
 
-		if (x != 0 || z != 0) {
-			noise = 4;
-		}
+			if (x != 0 || z != 0) {
+				noise = 4;
+			}
 
 	
-		if (Input.GetButtonDown ("Sneak")) {
-			_Current.Stop ();
-			_Current = _Walking;
-		} else if (Input.GetButtonUp ("Sneak")) {
-			_Current.Stop ();
-			_Current = _Running;
+			if (Input.GetButtonDown ("Sneak")) {
+				_Current.Stop ();
+				_Current = _Walking;
+			} else if (Input.GetButtonUp ("Sneak")) {
+				_Current.Stop ();
+				_Current = _Running;
+			}
+			if (Input.GetButton ("Sneak")) {
+				moveSpeed = 2.0f;
+				noise = 2;
+				_animator.speed = 0.75f;
+			}
+
+			//_Audio.volume = noise / 4f;
+
+			if (!_Current.isPlaying) {
+				_Current.Play ();
+			}
+			if (x == 0 && z == 0) {
+				_Current.Stop ();
+			}
+
+
+			if (_characterController.isGrounded) {
+				_moveDirection = new Vector3 (x, 0, z);
+				_moveDirection = transform.TransformDirection (_moveDirection);
+				_moveDirection *= moveSpeed;
+			}
+
+			_moveDirection.y -= Gravity * Time.deltaTime;
+			_characterController.Move (_moveDirection * Time.deltaTime);
+
+			_animator.SetBool ("run", (z != 0 || x != 0));
+
+			rotate = Input.GetAxis ("Mouse X") * turnSpeed;
+			transform.Rotate (new Vector3 (0, rotate, 0));
 		}
-		if (Input.GetButton ("Sneak")) {
-			moveSpeed = 2.0f;
-			noise = 2;
-			_animator.speed = 0.75f;
-		}
-
-		//_Audio.volume = noise / 4f;
-
-		if (!_Current.isPlaying) {
-			_Current.Play ();
-		}
-		if (x == 0 && z == 0) {
-			_Current.Stop ();
-		}
-
-
-		if (_characterController.isGrounded) {
-			_moveDirection = new Vector3 (x, 0, z);
-			_moveDirection = transform.TransformDirection (_moveDirection);
-			_moveDirection *= moveSpeed;
-		}
-
-		_moveDirection.y -= Gravity * Time.deltaTime;
-		_characterController.Move (_moveDirection * Time.deltaTime);
-
-		_animator.SetBool("run", (z != 0 || x != 0));
-		/*_moveDirection = new Vector3 (x, 0, z);
-
-		Vector3 forward = Vector3.Scale(transform.forward, new Vector3(1,0,1)).normalized;
-		Vector3 move = z * forward + x * transform.right;
-
-		if (move.magnitude > 1f)
-			move.Normalize ();
-
-		move = transform.InverseTransformDirection (move);
-
-		if (_characterController.isGrounded) {
-			if (z > 0) _moveDirection = transform.forward * move.magnitude;
-			if (z < 0) _moveDirection = -transform.forward * move.magnitude;
-			if (x > 0) _moveDirection = transform.right * move.magnitude;
-			if (x < 0) _moveDirection = -transform.right * move.magnitude;
-			_moveDirection *= moveSpeed;
-		}
-
-		_moveDirection.y -= Gravity;
-
-		_characterController.Move(_moveDirection * Time.deltaTime);*/
-
-		rotate = Input.GetAxis ("Mouse X") * turnSpeed;
-		transform.Rotate(new Vector3 (0, rotate, 0));
 	}
 
 	public float GetNoise() {

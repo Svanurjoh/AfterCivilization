@@ -38,14 +38,6 @@ public class GameManagerScript : MonoBehaviour {
 	private GameObject lvl5;
 	private GameObject lvl6;
 
-	//Bool variables if gem is delivered
-	private bool gem1delivered = false;
-	private bool gem2delivered = false;
-	private bool gem3delivered = false;
-	private bool gem4delivered = false;
-	private bool gem5delivered = false;
-	private bool gem6delivered = false;
-
 	#endregion
 
 	public static GameManagerScript instance;
@@ -63,7 +55,6 @@ public class GameManagerScript : MonoBehaviour {
 
 		if (instance == null) {
 			instance = this;
-			DontDestroyOnLoad (this);
 		} else {
 			Debug.LogError ("Two GameManager's Active, fix this ASAP!!");
 			Destroy (this);
@@ -125,18 +116,6 @@ public class GameManagerScript : MonoBehaviour {
 	public void deliverGem(GameObject gem) {
 		gem.transform.position = shipGemSlots [gemsDelivered].transform.position;
 		gemsDelivered++;
-		if (gem1 == gem)
-			gem1delivered = true;
-		if (gem2 == gem)
-			gem2delivered = true;
-		if (gem3 == gem)
-			gem3delivered = true;
-		if (gem4 == gem)
-			gem4delivered = true;
-		if (gem5 == gem)
-			gem5delivered = true;
-		if (gem6 == gem)
-			gem6delivered = true;
 	}
 
 	public void resetAllLevels ()
@@ -154,5 +133,9 @@ public class GameManagerScript : MonoBehaviour {
 		lvl4 = Instantiate (level4, level4.transform.position, level4.transform.rotation);
 		lvl5 = Instantiate (level5, level5.transform.position, level5.transform.rotation);
 		lvl6 = Instantiate (level6, level6.transform.position, level6.transform.rotation);
+	}
+
+	public bool getIsPaused() {
+		return isPaused;
 	}
 }
