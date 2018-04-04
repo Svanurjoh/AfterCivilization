@@ -115,10 +115,17 @@ public class GameManagerScript : MonoBehaviour {
 			closest.canShout = true;
 		}
 
-		if (Input.GetKeyDown (KeyCode.P)) {
+		if (Input.GetKeyDown (KeyCode.P) || Input.GetKeyDown (KeyCode.Escape)) {
 			isPaused = !isPaused;
 		}
-		Time.timeScale = isPaused ? 0 : 1;
+		if (isPaused) {
+			Time.timeScale = 0;
+			if(Input.GetKeyDown(KeyCode.Q))
+				SceneManager.LoadScene ("MainMenu");
+		}
+		else 
+			Time.timeScale = 1;
+		
 		Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
 		Cursor.visible = isPaused ? true : false;
 	}
