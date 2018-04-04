@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
@@ -61,6 +62,7 @@ public class PlayerController : MonoBehaviour
 			lastAttack = 0;
 			frameCount = Time.frameCount;
 			AxeCount--;
+			GameObject.FindGameObjectWithTag ("AxeCounter").GetComponent<Text> ().text = AxeCount.ToString ();
         }
 		if (frameCount + 6 == Time.frameCount) {
 			throwAxe ();
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour
 		if (other.gameObject.tag == "Gem" && !holdingGem) {
 			GemInArm = other.gameObject;
 			holdingGem = true;
+			GameManagerScript.instance.holdingGem.enabled = true;
 		}
 
 		if (other.tag.Equals ("Weapon")) {
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour
 			GameManagerScript.instance.deliverGem (GemInArm);
 			holdingGem = false;
 			GemInArm = null;
+			GameManagerScript.instance.holdingGem.enabled = false;
 		}
     }
 

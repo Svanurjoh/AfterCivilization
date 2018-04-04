@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour {
@@ -15,6 +16,8 @@ public class GameManagerScript : MonoBehaviour {
 	public GameObject level6;
 	public GameObject redGemPrefab;
 	public PlayerController player;
+
+	public Image holdingGem;
 
 	private int gemsDelivered = 0;
 	private int maxGems = 6;
@@ -52,6 +55,8 @@ public class GameManagerScript : MonoBehaviour {
 		lvl4 = Instantiate (level4, level4.transform.position, level4.transform.rotation);
 		lvl5 = Instantiate (level5, level5.transform.position, level5.transform.rotation);
 		lvl6 = Instantiate (level6, level6.transform.position, level6.transform.rotation);
+
+		holdingGem = GameObject.FindGameObjectWithTag ("GemHolder").GetComponent<Image> ();
 
 		if (instance == null) {
 			instance = this;
