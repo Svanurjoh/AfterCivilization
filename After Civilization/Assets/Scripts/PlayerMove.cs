@@ -61,8 +61,6 @@ public class PlayerMove : MonoBehaviour {
 				_animator.speed = 0.75f;
 			}
 
-			//_Audio.volume = noise / 4f;
-
 			if (!_Current.isPlaying) {
 				_Current.Play ();
 			}
@@ -74,6 +72,7 @@ public class PlayerMove : MonoBehaviour {
 			if (_characterController.isGrounded) {
 				_moveDirection = new Vector3 (x, 0, z);
 				_moveDirection = transform.TransformDirection (_moveDirection);
+				_moveDirection.Normalize ();
 				_moveDirection *= moveSpeed;
 			}
 
