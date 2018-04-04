@@ -6,12 +6,7 @@ using UnityEngine.UI;
 
 public class UIButtonScript : MonoBehaviour {
 
-	public Text endGameText;
-
 	void Awake() {
-		if (GameManagerScript.instance.getGemsDelivered () != 6) {
-			endGameText.text = "LOOOOOOOOOOOOOOSER";
-		}
 	}
 
 	public void NewGameButton()
