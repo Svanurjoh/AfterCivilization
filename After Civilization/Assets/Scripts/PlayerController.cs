@@ -103,6 +103,11 @@ public class PlayerController : MonoBehaviour
 	}
 
 	private void isDead() {
+		if (GemInArm != null) {
+			GemInArm.transform.position = new Vector3 (100, 100, 100);
+			holdingGem = false;
+			GemInArm = null;
+		}
 		GameManagerScript.instance.resetAllLevels ();
 		this.transform.position = new Vector3 (24, 0, -10);
 	}
