@@ -264,6 +264,7 @@ public class GameManagerScript : MonoBehaviour {
 		}
 		timeSinceLastComplete = timer;
 		Score.text = score.ToString ();
+		ScoreManager.instance.score = score;
 	}
 
 	private int getTotalEnemiesInLevel(GameObject level) {
