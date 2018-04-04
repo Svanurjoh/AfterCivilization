@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour
 			GemInArm.transform.position = new Vector3 (100, 100, 100);
 			holdingGem = false;
 			GemInArm = null;
+			GameManagerScript.instance.holdingGem.enabled = false;
 		}
 		GameManagerScript.instance.resetAllLevels ();
 		this.transform.position = new Vector3 (24, 0, -10);

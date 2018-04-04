@@ -5,10 +5,9 @@ using UnityEngine;
 public class Axe : MonoBehaviour {
 
 	private bool isTouching = false;
-	private PlayerController _playerController;
 
 	void Awake() {
-		_playerController = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController>();
+		
 	}
 
 	void Update() {

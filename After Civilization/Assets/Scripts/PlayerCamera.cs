@@ -33,8 +33,6 @@ public class PlayerCamera : MonoBehaviour
 		if (Input.GetMouseButton (0)) {
 			x += Input.GetAxis ("Mouse X") * xSpeed * 0.02f;
 			y -= Input.GetAxis ("Mouse Y") * ySpeed * 0.02f;
-			float test = 0;
-			test = y;
 		}
 		distance += -(Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime) * zoomRate * Mathf.Abs(distance);
 		if (distance < 2.5f) {
@@ -45,9 +43,6 @@ public class PlayerCamera : MonoBehaviour
 		}
 
 		y = ClampAngle(y, yMinLimit, yMaxLimit);
-
-		Quaternion rotation;
-		Vector3 position;
 
 		transform.rotation = Quaternion.Euler (y, x, 0);
 		transform.position = Quaternion.Euler (y, x, 0) * new Vector3 (0.0f, 2.0f, -distance) + target.position;

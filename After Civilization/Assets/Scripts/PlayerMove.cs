@@ -7,7 +7,6 @@ public class PlayerMove : MonoBehaviour {
 	float turnSpeed = 5.0f;
 	float moveSpeed = 4.0f;
 	float noise;
-	float mouseTurnMultiplier = 1;
 
 	public AudioClip walking;
 	public AudioClip running;
