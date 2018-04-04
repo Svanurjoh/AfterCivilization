@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 	private bool canAttack;
 	private float attackSpeed = 3.0f;
 
+	public int AxeCount = 20;
 	public int Health = 100;
     public GameObject rightHand;
 	public GameObject leftHand;
@@ -23,8 +24,7 @@ public class PlayerController : MonoBehaviour
 	private GameObject GemInArm = null;
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         _animator = GetComponent<Animator>();
     }
 
@@ -35,8 +35,7 @@ public class PlayerController : MonoBehaviour
 		mHealthBar.SetHealth (Health);
 	} 
 
-    public void TakeDamage(int amount)
-    {
+    public void TakeDamage(int amount) {
         Health -= amount;
 		if (Health <= 0) {
 			Health = 0;
@@ -47,8 +46,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
 		//Attack cooldown
 		if (!canAttack) {
 			lastAttack += Time.deltaTime;
@@ -57,12 +55,12 @@ public class PlayerController : MonoBehaviour
 			canAttack = true;
 		}
         // Throw axe
-		if(Input.GetMouseButtonDown(0) && canAttack)
-        {
+		if(Input.GetMouseButtonDown(0) && canAttack && AxeCount > 0) {
             _animator.SetTrigger("attack_1");
 			canAttack = false;
 			lastAttack = 0;
 			frameCount = Time.frameCount;
+			AxeCount--;
         }
 		if (frameCount + 6 == Time.frameCount) {
 			throwAxe ();
@@ -101,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
 	private void throwAxe()
 	{
-		Instantiate (axe, rightHand.transform.position, Quaternion.Euler(-90, transform.localEulerAngles.y, -90));
+		Instantiate (axe, rightHand.transform.position, Quaternion.Euler (-90, transform.localEulerAngles.y, -90));
 	}
 
 	private void isDead() {
