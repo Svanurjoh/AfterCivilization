@@ -30,6 +30,9 @@ public class GameManagerScript : MonoBehaviour {
 
 	private float timer = 0f;
 	private Text Timer;
+	private float timeSinceLastComplete = 0f;
+	private int score = 0;
+	private Text Score;
 
 	#region level varibles
 
@@ -55,6 +58,7 @@ public class GameManagerScript : MonoBehaviour {
 	private GameObject lvl4;
 	private GameObject lvl5;
 	private GameObject lvl6;
+
 
 	#endregion
 
@@ -87,6 +91,7 @@ public class GameManagerScript : MonoBehaviour {
 		gem6 = Instantiate (redGemPrefab, gemSpawns [5].transform.position, redGemPrefab.transform.rotation);
 
 		Timer = GameObject.FindGameObjectWithTag ("Timer").GetComponent<Text>();
+		Score = GameObject.FindGameObjectWithTag ("Score").GetComponent<Text>();
 	}
 	
 	// Update is called once per frame
@@ -172,18 +177,25 @@ public class GameManagerScript : MonoBehaviour {
 	public void deliverGem(GameObject gem) {
 		gem.transform.position = shipGemSlots [gemsDelivered].transform.position;
 		gemsDelivered++;
-		if (gem == gem1)
+		if (gem == gem1) {
 			gem1delivered = true;
-		if (gem == gem2)
+			GetScoreForLevel (lvl1);
+		} else if (gem == gem2) {
 			gem2delivered = true;
-		if (gem == gem3)
+			GetScoreForLevel (lvl2);
+		} else if (gem == gem3) {
 			gem3delivered = true;
-		if (gem == gem4)
+			GetScoreForLevel (lvl3);
+		} else if (gem == gem4) {
 			gem4delivered = true;
-		if (gem == gem5)
+			GetScoreForLevel (lvl4);
+		} else if (gem == gem5) {
 			gem5delivered = true;
-		if (gem == gem6)
+			GetScoreForLevel (lvl5);
+		} else if (gem == gem6) {
 			gem6delivered = true;
+			GetScoreForLevel (lvl6);
+		}
 
 		playerHealth = player.Health;
 		playerAxes = player.AxeCount;
@@ -240,5 +252,27 @@ public class GameManagerScript : MonoBehaviour {
 	}
 	public int GetPlayerHealth() {
 		return playerHealth;
+	}
+
+	private void GetScoreForLevel(GameObject level) {
+		int totalEnemies = getTotalEnemiesInLevel (level);
+		score += totalEnemies * 3;
+		float diff = timer - timeSinceLastComplete;
+		int timeScore = (int) ((60 / diff) * 100);
+		if (timeScore > 0) {
+			score += timeScore;
+		}
+		timeSinceLastComplete = timer;
+		Score.text = score.ToString ();
+	}
+
+	private int getTotalEnemiesInLevel(GameObject level) {
+		int enemies = 0;
+		foreach (var child in level.GetComponentsInChildren<Transform>()) {
+			if (child.tag == "Enemy") {
+				enemies++;
+			}
+		}
+		return enemies;
 	}
 }
