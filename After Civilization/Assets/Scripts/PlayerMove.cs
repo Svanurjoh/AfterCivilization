@@ -47,14 +47,32 @@ public class PlayerMove : MonoBehaviour {
 				noise = 4;
 			}
 
-	
+			if (z < 0f) {
+				moveSpeed /= 2;
+				if (_Current != _Walking) {
+					_Current.Stop ();
+					_Current = _Walking;
+				}
+			} else {
+				if (_Current != _Running) {
+					_Current.Stop ();
+					_Current = _Running;
+				}
+			}
+
 			if (Input.GetButtonDown ("Sneak")) {
 				_Current.Stop ();
 				_Current = _Walking;
 			} else if (Input.GetButtonUp ("Sneak")) {
 				_Current.Stop ();
 				_Current = _Running;
+			} else if (Input.GetButton ("Sneak")) {
+				if (_Current != _Walking) {
+					_Current.Stop ();
+					_Current = _Walking;
+				}
 			}
+
 			if (Input.GetButton ("Sneak")) {
 				moveSpeed = 2.0f;
 				noise = 2;
